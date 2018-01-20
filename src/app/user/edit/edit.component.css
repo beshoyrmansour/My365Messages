@@ -1,0 +1,7 @@
+.card-block {
+    min-height: 300px;
+}
+.over{
+    overflow:scroll;
+    white-space:no-wrap;
+}

@@ -1,0 +1,29 @@
+.foatback{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height:40px;
+    width: 40px;
+    /* padding-left:-20px; */
+    padding-top: 7px;
+    border-radius: 0 0 50% 0; 
+    background-color: rgba(255, 255, 255,0.9);
+    /* color: red; */
+    font-weight: bold;
+    z-index: 90;
+}
+
+.foathome{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height:40px;
+    width: 45px;
+    /* padding-left:-20px; */
+    padding-top: 7px;
+    border-radius: 0 0 0 50%; 
+    background-color: rgba(255, 255, 255,0.9);
+    /* color: red; */
+    font-weight: bold;
+    z-index: 90;
+}

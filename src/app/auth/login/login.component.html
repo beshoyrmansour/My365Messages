@@ -1,0 +1,19 @@
+<div style="text-align:center">
+  <img src="../../../assets/MY356MSG.svg" alt="" style="margin: 0 auto; padding-top:10%; padding-bottom:10px; width:60%; ">
+    <h2 class="mt-2 mb-4">WELCOME</h2>
+    <tabset [justified]="true" class="text-center">
+      <tab heading="Login as Receiver">
+        <app-receiver></app-receiver>
+      </tab>
+      <tab heading="Login as Sender">
+        <app-sender></app-sender>
+      </tab>
+    </tabset>
+    <hr>
+    <button class="btn btn-outline-primary mb-2" type="button" (click)="gotoSignUp()">Sign Up
+      <strong>Now</strong>
+    </button>
+    <button class="btn btn-outline-primary mb-2" type="button" (click)="Notify()">Notify
+      <strong>Me</strong>
+    </button>
+  </div>

@@ -1,0 +1,71 @@
+<div class="col-12">
+  <h3 class="my-3 text-dark text-center">Register your Data</h3>
+  <form class="my-2" [formGroup]="EditUserForm">
+    <h3 class="text-info text-center">Sender Data</h3>
+    <div class="form-group">
+      <label *ngIf="EditUserForm.controls.senderName.value">Sender name</label>
+      <input type="text" formControlName="senderName" class="form-control" placeholder="Your Name">
+    </div>
+    <div class="form-group">
+      <label *ngIf="EditUserForm.controls.username.value">Username</label>
+      <input type="text" formControlName="username" class="form-control" placeholder="Your username">
+    </div>
+    <div class="form-group">
+      <label *ngIf="EditUserForm.controls.senderEmail.value">Sender Email</label>
+      <input type="email" formControlName="senderEmail" class="form-control" placeholder="Your Email">
+    </div>
+
+    <button class="btn btn-outline-info mt-2 btn-block mb-2" type="button" (click)="gotochangePassword()">Change Password</button>
+    <h3 class="text-info text-center">Receiver Data</h3>
+    <div class="form-group">
+      <label *ngIf="EditUserForm.controls.receiverName.value">Receiver Name</label>
+      <input type="text" formControlName="receiverName" class="form-control" placeholder="Receiver Name">
+    </div>
+    <div class="form-group">
+      <label *ngIf="EditUserForm.controls.passCode.value">PassCode</label>
+      <input type="text" formControlName="passCode" class="form-control" placeholder="Special passCode">
+      <small class="text-muted">
+        Must be 5-20 characters long, Save it for later
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Background</label>
+      <label class="custom-file">
+        <input type="file" id="file2" class="custom-file-input" (change)='uploadFile($event)'>
+        <span class="custom-file-control"></span>
+      </label>
+    </div>
+
+    <!-- <button class="btn btn-outline-info mt-2 btn-block mb-2" type="button" (click)="getBackgrounds()">Change Password</button> -->
+    <div class="card-deck">
+      <div class="container-fluid over">
+        <div class="row flex-row flex-nowrap ">
+          <!-- <div class="col-9">
+            <div class="card text-center">
+              <img class="card-img-top" [src]="backgrounds[0]" alt="Card image cap">
+              <div class="card-footer">
+                <button class="btn btn-danger btn-block">Delete this image</button>
+              </div>
+            </div>
+          </div> -->
+          <div *ngFor="let img of backgrounds; let i = index">
+            <div class="col-9" *ngIf="img!=null">
+              <div class="card text-center">
+                <img class="card-img-top" [src]="img" alt="Card image cap">
+                <div class="card-footer">
+                  <button class="btn btn-danger btn-block" (click)="deletBackground(i)">Delete this image</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- <div class="form-group">
+      <label for="startDate">Start date</label>
+      <input type="date" id="startDate"  formControlName="startDate" class="form-control">
+    </div> -->
+    <button class="btn btn-primary mt-2 btn-block " type="button" (click)="onSvaeEdit()">Save changes</button>
+  </form>
+</div>

@@ -1,0 +1,40 @@
+.img-fill{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    margin: 0px;
+    height:100%;
+    width: auto; 
+    /* width:100%;
+    height: auto;  */
+    background-size: cover;
+}
+.darker{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    padding: 0px;
+    height:100%;
+    width: 100%; 
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: scroll;
+    
+}
+.msg{
+    /* padding: 50px 0px; */
+    z-index: 2px;
+    font-weight: lighter;
+}
+.msg::before,.msg::after{
+    /* padding-bottom: 20px; */
+    content: "\"";
+}
+.xo{
+    word-wrap: normal;
+    overflow: scroll;
+    
+}
+
+

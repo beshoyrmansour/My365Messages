@@ -1,0 +1,17 @@
+<div class="col-12 pt-4">
+  <form [formGroup]="loginForm">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" formControlName="senderEmail" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <small id="emailHelp" class="form-text text-danger" *ngIf="ShowInvalidEmail">Please Enter Valid Email to user foget my password service.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" formControlName="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <!-- <button class="btn btn-outline-primary mb-2" type="button" (click)="changePassword()">change <strong>Password</strong></button> -->
+    <button type="button" class="btn btn-primary  btn-block px-3"(click)="onLogin()">login</button>
+    <button *ngIf="showForgetPassword" class="btn btn-link btn-block" type="button" (click)="gotoForgetPassword()">Forget my <strong>Password</strong></button>    
+  </form>
+</div>

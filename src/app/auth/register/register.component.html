@@ -1,0 +1,102 @@
+<div class="col-12">
+  <h3 class="my-3 text-dark text-center">Register your Data</h3>
+  <form class="my-2" [formGroup]="newUserForm">
+    <h3 class="text-info text-center">Sender Data</h3>
+    <p class="text-muted lead">Who are you?</p>
+    <div class="form-group">
+      <input type="text" formControlName="senderName" class="form-control" placeholder="Enter Your Name">
+      <small class="text-danger" *ngIf="!newUserForm.controls.senderName.valid && newUserForm.controls.senderName.touched">
+        Invalid Sender Name, Please don't use any secipal characters only letters and numbers are valid.
+        <br> Must be 5-20 characters long.
+      </small>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="username" class="form-control" placeholder="Enter Your username">
+      <small class="text-danger" *ngIf="!newUserForm.controls.username.valid && newUserForm.controls.username.touched && newUserForm.controls.username.value">
+        Invalid username, Please don't use any secipal and spaces characters only letters, numbers and underscores are valid.
+        <br>
+      </small>
+      <small class="text-danger" *ngIf="newUserForm.controls.username.touched && !newUserForm.controls.username.value">
+        Username is Required, Can't be empty
+        <br>
+      </small>
+      <small class="text-muted">
+        Must be 8-20 characters long.
+      </small>
+    </div>
+    <div class="form-group">
+      <input type="email" formControlName="senderEmail" class="form-control" placeholder="Enter Your Email" email>
+      <small class="text-danger" *ngIf="!newUserForm.controls.senderEmail.valid && newUserForm.controls.senderEmail.touched  && newUserForm.controls.senderEmail.value">
+        Invalid Email format.
+      </small>
+      <small class="text-danger" *ngIf="newUserForm.controls.senderEmail.touched && !newUserForm.controls.senderEmail.value">
+        Email is Required, Can't be empty
+        <br>
+      </small>
+    </div>
+    <p class="text-muted lead">Secure you data</p>
+    <div class=" " [ngClass]="{'card border-danger pt-3 mb-4': (this.newUserForm.controls.confirmPassword.touched && this.newUserForm.controls.password.touched)
+    && ((this.newUserForm.controls.confirmPassword.value != this.newUserForm.controls.password.value))}">
+      <div class="form-group">
+        <input type="password" formControlName="password" class="form-control" placeholder="Enter Your Password">
+        <small class="text-muted">
+          Must be 8-20 characters long.
+        </small>
+        <small class="text-danger" *ngIf="(newUserForm.controls.confirmPassword.touched && newUserForm.controls.password.touched)
+        && (newUserForm.controls.confirmPassword.value != newUserForm.controls.password.value)">
+          <br> Your password and confirmation password do not match.
+        </small>
+      </div>
+      <div class="form-group">
+        <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Enter Your Password">
+
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="securityQuestion" class="form-control" placeholder="Enter security question">
+      <small class="text-muted">
+        Must be 5-50 characters long, Save it for later
+      </small>
+      <small class="text-danger" *ngIf="newUserForm.controls.securityQuestion.touched && !newUserForm.controls.securityQuestion.value">
+        <br> Security Question is Required, Can't be empty
+      </small>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="securityAnswer" class="form-control" placeholder="Enter security Answer">
+      <small class="text-muted">
+        Must be 5-50 characters long, Save it for later
+      </small>
+      <small class="text-danger" *ngIf="newUserForm.controls.securityAnswer.touched && !newUserForm.controls.securityAnswer.value">
+        <br> Security Answer is Required, Can't be empty
+      </small>
+    </div>
+    <!-- ---------------------------------- Receiver Data ---------------------------------- -->
+    <h3 class="text-info text-center">Receiver Data</h3>
+    <div class="form-group">
+      <input type="text" formControlName="receiverName" class="form-control" placeholder="Enter Receiver Name">
+      <small class="text-danger" *ngIf="newUserForm.controls.receiverName.touched && !newUserForm.controls.receiverName.value">
+        <br> Email is Required, Can't be empty
+      </small>
+      <small class="text-danger" *ngIf="!newUserForm.controls.receiverName.valid && newUserForm.controls.receiverName.touched && newUserForm.controls.receiverName.value">
+        <br> Invalid Receiver Name
+      </small>
+    </div>
+
+    <div class="form-group">
+      <input type="text" formControlName="passCode" class="form-control" placeholder="Enter special passCode">
+      <small class="text-muted">
+        Must be 5-20 characters long, Save it for later
+      </small>
+      <small class="text-danger" *ngIf="newUserForm.controls.passCode.touched && !newUserForm.controls.passCode.value">
+        <br> passCode is Required, Can't be empty
+      </small>
+      <small class="text-danger" *ngIf="!newUserForm.controls.passCode.valid && newUserForm.controls.passCode.touched && newUserForm.controls.passCode.value">
+        <br> Invalid passCode
+      </small>
+    </div>
+    <!-- ---------------------------------- Submit ---------------------------------- -->
+    <button class="btn btn-primary mt-2 btn-block " type="button" [disabled]="!newUserForm.valid" (click)="onSignUp()">Save and Sign
+      <strong>In</strong>
+    </button>
+  </form>
+</div>

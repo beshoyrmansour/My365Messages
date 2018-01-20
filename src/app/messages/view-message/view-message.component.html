@@ -1,0 +1,36 @@
+<div class="card bg-dark text-white d-block d-flex flex-column lign-items-center text-center" *ngIf="!spinner;else spin">
+  <img class=" img-fill" [src]="todayBg" width="100%" alt="Card image">
+  <div class="darker">
+    <img src="../../../assets/MY356MSG.svg" alt="" style="margin:auto; padding-top:10px; padding-bottom:0px; width:40%; ">
+    <div class="my-4 mx-2">
+      <h5 class="card-title">Hello
+        <strong>{{receiverName}}</strong>
+      </h5>
+      <h4 class="card-title">Today is</h4>
+      <h5 class="card-title lead">{{today | date}}</h5>
+      <p class="card-title lead">
+        <strong>{{senderName}}</strong> send us to say</p>
+      <!-- <h2>{{passCode}}</h2> -->
+      <h3 class="card-text my-4 msg" [innerHTML]="todayMessage || 'No Message found'"></h3>
+      <div class="fixed-bottom py-2">
+        <!-- <a href="#" class="text-muted"><p class="card-text">Share this message</p></a>
+        <a href="#" class="text-white" style="font-size:1.6em"><i class="fa fa-facebook px-3" aria-hidden="true"></i></a>
+        <a href="#" class="text-white" style="font-size:1.6em"><i class="fa fa-twitter  px-3" aria-hidden="true"></i></a>
+        <a href="#" class="text-white" style="font-size:1.6em"><i class="fa fa-whatsapp px-3" aria-hidden="true"></i></a> -->
+        <a href="#" class="text-muted">
+          <p class="card-text">see you tomorow</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #spin>
+  <div class="sk-folding-cube">
+    <div class="sk-cube1 sk-cube" style="background-color:#21D8DE"></div>
+    <div class="sk-cube2 sk-cube" style="background-color:#02ACAB"></div>
+    <div class="sk-cube4 sk-cube" style="background-color:#ef5050"></div>
+    <div class="sk-cube3 sk-cube" style="background-color:#FF4C4D"></div>
+  </div>
+
+  <h4 class="display-4" style="text-align:center">Loading Your Message</h4>
+</ng-template>

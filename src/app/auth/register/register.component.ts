@@ -34,7 +34,6 @@ export class RegisterComponent implements OnInit, AfterContentInit {
 
   ngOnInit() {
     // const CF: FormControl = new FormControl(this.newUserForm.controls['password']);
-    console.log(this.newUserForm.controls.password.validator);
     this.isInvalidPassword = (this.newUserForm.controls.confirmPassword.touched && this.newUserForm.controls.password.touched)
       && ((this.newUserForm.controls.confirmPassword.value != this.newUserForm.controls.password.value))
   }
@@ -43,10 +42,8 @@ export class RegisterComponent implements OnInit, AfterContentInit {
   validatePasswordMatch(control: FormControl): ValidationErrors | null {
     let confirmValue = this.newUserForm.controls['confirmPassword'].value;
     if ((<string>control.value) === (confirmValue)) {
-      console.log('valid');
       return Observable.of(null);
     } else {
-      console.log('invalid');
       return Observable.of('Your password and confirmation password do not match');
     }
   }
@@ -63,18 +60,15 @@ export class RegisterComponent implements OnInit, AfterContentInit {
         'securityAnswer': this.newUserForm.controls.securityAnswer.value,
         'userBackgrounds': ['']
       };
-      console.log('this.newUser', this.newUser);
       this.authService.signup(this.newUser, this.newUserForm.controls.password.value).then(() => {
-        console.log('Register Component onSignUp Auth Service signup then is fired');
         this.router.navigate(['/user'])
       }).catch((err) => {
-        console.log('Register Component onSignUp Auth Service signup catch Error : ' + err)
+        alert('Register Component onSignUp Auth Service signup catch Error : ' + err)
         this.router.navigate(['/'])
       })
     } else {
       // this.isInvalidPassword = true;
-
-      console.log('Form is invalid');
+      alert('Form is invalid');
     }
 
 

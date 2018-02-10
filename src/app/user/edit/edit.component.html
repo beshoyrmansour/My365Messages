@@ -1,5 +1,6 @@
 <div class="col-12">
   <h3 class="my-3 text-dark text-center">Register your Data</h3>
+  
   <form class="my-2" [formGroup]="EditUserForm">
     <h3 class="text-info text-center">Sender Data</h3>
     <div class="form-group">
@@ -36,36 +37,26 @@
       </label>
     </div>
 
-    <!-- <button class="btn btn-outline-info mt-2 btn-block mb-2" type="button" (click)="getBackgrounds()">Change Password</button> -->
+    <div class="alert alert-primary" *ngIf="uploading" role="alert">Uploading ....</div>
+
     <div class="card-deck">
       <div class="container-fluid over">
         <div class="row flex-row flex-nowrap ">
-          <!-- <div class="col-9">
-            <div class="card text-center">
-              <img class="card-img-top" [src]="backgrounds[0]" alt="Card image cap">
-              <div class="card-footer">
-                <button class="btn btn-danger btn-block">Delete this image</button>
-              </div>
-            </div>
-          </div> -->
           <div *ngFor="let img of backgrounds; let i = index">
             <div class="col-9" *ngIf="img!=null">
-              <div class="card text-center">
+              <div class="card text-center" style="min-width: 230px;">
                 <img class="card-img-top" [src]="img" alt="Card image cap">
-                <div class="card-footer">
-                  <button class="btn btn-danger btn-block" (click)="deletBackground(i)">Delete this image</button>
+                <div class="card-footer text-center">
+                  <button class="btn btn-danger btn-block" *ngIf="!userService.isDefault" (click)="deletBackground(i)">Delete this image</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-    <!-- <div class="form-group">
-      <label for="startDate">Start date</label>
-      <input type="date" id="startDate"  formControlName="startDate" class="form-control">
-    </div> -->
-    <button class="btn btn-primary mt-2 btn-block " type="button" (click)="onSvaeEdit()">Save changes</button>
+
+    <button class="btn btn-primary mt-2 btn-block " type="button" [disabled]="!EditUserForm.valid || EditUserForm.untouched"
+      (click)="onSvaeEdit()">Save changes</button>
   </form>
 </div>

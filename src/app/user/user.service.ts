@@ -12,21 +12,26 @@ export class UserService {
 
   userMessages: message[];
   userData: user;
+  userID: string;
   userBackgrounds = [];
+  isDefault: boolean;
   constructor(
     private authService: AuthService,
-    private afs: AngularFirestore,
-
+    private afs: AngularFirestore
   ) {
     this.afs.collection('users', ref => ref.where('email', '==', localStorage.getItem('email'))).snapshotChanges()
       .map((actions) => {
         return actions.map(a => {
           const data = a.payload.doc.data() as user;
           const id = a.payload.doc.id;
+          console.log('ID', id);
+          this.userID = id;
           return { id, ...data };
         });
       }).subscribe((user) => {
         this.userData = user[0];
+        console.log('constructor subscribe userData', this.userData);
+        // userID
         this.afs.collection('messages', ref => ref.where('sender', '==', this.userData.id)).snapshotChanges()
           .map((actions) => {
             return actions.map(a => {
@@ -41,7 +46,7 @@ export class UserService {
     firebase.initializeApp(environment.firebase)
   }
 
-  getuserData() {
+  getUserData() {
     return this.userData;
   }
 
@@ -49,74 +54,58 @@ export class UserService {
     return this.userMessages;
   }
 
-  updateBackgroundsNumber(flag: boolean) {
+  updateUserData() {
+    console.log('updating User Data with ID :', this.userData.id);
+    return this.afs.collection('users').doc(this.userData.id).update(this.userData).then(() => {
 
-    return this.afs.collection('users').doc(this.userData.id).update(this.userData);
+    });
   }
+
   postBackgrounds(file: File) {
     console.log('file uploading ...');
-    console.log(file);
+    // console.log(file);
     return firebase.storage().ref(this.userData.id + '/').child(file.name).put(file).then(() => {
       console.log('file uploaded successfuly');
       this.userData.userBackgrounds.push(file.name)
       return this.afs.collection('users').doc(this.userData.id).update(this.userData);
     });
-    // return firebase.storage().ref(this.userData.id + '/').child((this.userData.backgroundNumber + 1) + '.jpeg').put(file).then(() => {
-    //   console.log('file uploaded successfuly');
-    //   this.updateBackgroundsNumber(true).then(() => {
-    //     console.log('Backgrounds Number updated.');
-    //   });
-    // });
   }
 
   getBackgrounds() {
-    console.log('getBackgrounds() .......');
-
     this.userBackgrounds = [];
     let loop = false;
-    if (this.userData.userBackgrounds != ['']) {
-      console.log('True', this.userData.userBackgrounds);
+    if (this.userData.userBackgrounds) {
       for (const imgName in this.userData.userBackgrounds) {
         if (this.userData.userBackgrounds.hasOwnProperty(imgName)) {
-          const element = this.userData.userBackgrounds[imgName];
-          firebase.storage().ref(this.userData.id + '/').child(element).getDownloadURL().then((url) => {
-            this.userData.userBackgrounds[imgName] = url;
+          firebase.storage().ref(this.userData.id + '/').child(this.userData.userBackgrounds[imgName]).getDownloadURL().then((url) => {
+            this.userBackgrounds[imgName] = url;
+            console.log('userData Bacground URL #', imgName, ':', this.userData.userBackgrounds[imgName]);
           }).catch((err) => {
-            console.log('Error :', err);
+            alert('Error : ' + err.message);
           });
         }
       }
-
+      this.isDefault = false;
       return Observable.of(this.userBackgrounds);
     } else {
+      /* get the default bacground */
       firebase.storage().ref('def-bg.svg').getDownloadURL().then((url) => {
-        console.log(url);
-        this.userBackgrounds = url;
+        this.isDefault = true;
+        this.userBackgrounds[0] = url;
       }).catch((err) => {
-        console.log('Error :', err);
+        alert('Error :' + err.message);
       })
     }
   }
-  deletBackground(id: number) {
-    return firebase.storage().ref(this.userData.id + '/').child((id + 1) + '.jpeg').delete().then(() => {
-      console.log('image number ' + id + 'deleted');
-      // if (id < this.userData.backgroundNumber) {
-      //   for (let index = id; index < this.userData.backgroundNumber; index++) {
-      //     console.log('index: ' + index);
-      //     firebase.storage().ref(this.userData.id + '/').child((index + 1) + '.jpeg').getDownloadURL().then((ref) => {
-      //       console.log('adding next img...');
-      //       firebase.storage().ref(this.userData.id + '/').child((index - 1) + '.jpeg').put(ref).then(() => {
-      //         console.log('deleting old img...');
 
-      //         firebase.storage().ref(this.userData.id + '/').child((index + 1) + '.jpeg').delete();
-      //       })
-      //     })
-      //   }
-      // }
-      // this.updateBackgroundsNumber(false).then(() => {
-      //   console.log('Backgrounds Number updated.');
-      //   this.getBackgrounds();
-      // });
-    })
+  deletBackground(id: number) {
+    const imgName = this.userData.userBackgrounds[id];
+    return firebase.storage().ref(this.userData.id + '/').child(imgName).delete().then(() => {
+      this.userData.userBackgrounds.splice(id, 1);
+      this.userBackgrounds.splice(id, 1);
+      this.updateUserData().then(() => {
+        alert('Image ' + imgName + ' #' + id + ' deleted sucssefuly');
+      })
+    });
   }
 }

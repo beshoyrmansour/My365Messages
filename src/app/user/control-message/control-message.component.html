@@ -4,8 +4,8 @@
       <div style="text-align:center">
         <!-- *ngIf="spinner;else spin" -->
         <div>
-          <form class="mt-4">
-            <!-- [formGroup]="messageForm" (ngSubmit)="addNewMessage()" -->
+          <form class="mt-4" [formGroup]="messageForm" (ngSubmit)="addNewMessage()">
+
             <div class="row">
               <div class="col-4">
                 <img src="../../../assets/MY356MSG.svg" alt="" style="margin: 0 auto; padding-top:10%; padding-bottom:10px; width:100%; ">
@@ -14,13 +14,13 @@
                 <p>Welcome
                   <br>
                   <span class="text-info">Beshoy Refky</span>
-                  <span class="text-info">{{senderName}}</span>
+                  <!-- <span class="text-info">{{senderName}}</span> -->
                 </p>
               </div>
             </div>
 
             <small id="passwordHelpInline" class="text-muted">
-              You had entered {{messageForm.value['messageField'].length}} of 250 characters.
+              <!-- You had entered {{messageForm.value['messageField'].length}} of 250 characters. -->
             </small>
             <div class="input-group">
               <textarea rows="7" maxlength="250" formControlName="messageField" class="form-control" placeholder="New Message"></textarea>
@@ -36,8 +36,8 @@
             <div class="row">
               <div class="col-12">
                 <!-- formArrayName="messages" -->
-                <div class="row">
-                  <!-- *ngFor="let message of userMessages; let i = index" -->
+                <div class="row" *ngFor="let message of userMessages; let i = index">
+
                   <div class="col-12">
                     <div class="row mb-1">
                       <div class="col-12">
@@ -46,7 +46,7 @@
                           <span class="input-group-addon">{{i+1}}</span>
                           <textarea maxlength="250" class="form-control" placeholder="Empty Message" [disabled]="message.viewDate != 0">{{message.content}}</textarea>
                           <span class="input-group-btn">
-                            <div class="row" style="width:70px" >
+                            <div class="row" style="width:70px">
                               <div class="col-12">
                                 <button class="btn btn-block btn-danger" type="button" (click)="onDeleteTask(i)" [disabled]="message.viewDate != 0">
                                   <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -60,8 +60,8 @@
                             </div>
                           </span>
                         </div>
-                        <input type="text" class="form-control hidden-xs-up">
-                        <p class="form-text text-muted" *ngIf="message.viewDate !=0">
+                        <!-- <p class="form-text text-muted" *ngIf="message.viewDate !=0"> -->
+                        <p class="form-text text-muted" *ngIf="message.viewDate ===0">
                           {{'Viewed at ' +(message.viewDate | date:'M/d/yy, h:mm a')}}
                         </p>
                       </div>

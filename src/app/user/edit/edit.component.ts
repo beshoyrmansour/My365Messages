@@ -23,7 +23,8 @@ export class EditComponent implements OnInit {
     'senderEmail': new FormControl(null, [Validators.required, Validators.minLength(8), Validators.email]),
     'receiverName': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.pattern('^([a-zA-Z0-9 ]){5,20}')]),
     'passCode': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('[A-Za-z0-9]{5,20}')]),
-  });;
+  });
+  
   ngOnInit() {
     this.userData = this.userService.userData;
     this.EditUserForm.setValue({

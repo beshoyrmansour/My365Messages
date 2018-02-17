@@ -31,7 +31,6 @@ export class UserService {
       }).subscribe((user) => {
         this.userData = user[0];
         console.log('constructor subscribe userData', this.userData);
-        // userID
         this.afs.collection('messages', ref => ref.where('sender', '==', this.userData.id)).snapshotChanges()
           .map((actions) => {
             return actions.map(a => {
@@ -41,6 +40,8 @@ export class UserService {
             });
           }).subscribe((messages: message[]) => {
             this.userMessages = messages
+            console.log('constructor subscribe userMessages', this.userMessages);
+
           });
       });
     firebase.initializeApp(environment.firebase)
@@ -108,4 +109,9 @@ export class UserService {
       })
     });
   }
+
+  saveMessages(userMessages: message[]){
+    return null
+  }
+
 }

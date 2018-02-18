@@ -1,5 +1,5 @@
 import { environment } from './../../environments/environment.prod';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AuthService } from './../auth/auth.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +9,8 @@ import * as firebase from 'firebase';
 
 @Injectable()
 export class UserService {
-
+  public messageCollection: AngularFirestoreCollection<message>;
+  public messageDocument: AngularFirestoreDocument<message>;
   userMessages: message[];
   userData: user;
   userID: string;
@@ -38,10 +39,6 @@ export class UserService {
               const id = a.payload.doc.id;
               return { id, ...data };
             });
-          }).subscribe((messages: message[]) => {
-            this.userMessages = messages
-            console.log('constructor subscribe userMessages', this.userMessages);
-
           });
       });
     firebase.initializeApp(environment.firebase)
@@ -52,7 +49,15 @@ export class UserService {
   }
 
   getUserMessages() {
-    return this.userMessages;
+    console.log('this.userData.id', this.userData.id);
+    this.messageCollection = this.afs.collection<message>('messages', ref => ref.where('sender', '==', this.userData.id));
+    return this.messageCollection.snapshotChanges().map((actions) => {
+      return actions.map(a => {
+        const data = a.payload.doc.data() as user;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      });
+    });
   }
 
   updateUserData() {
@@ -110,8 +115,18 @@ export class UserService {
     });
   }
 
-  saveMessages(userMessages: message[]){
-    return null
+  saveMessages(newMessage: message) {
+    return this.messageCollection.add(newMessage);
   }
 
+  deleteMessage(messageId) {
+    return this.messageCollection.doc(messageId).delete();
+  }
+  editMessage(newContent, messageIndex) {
+    this.messageDocument = this.messageCollection.doc(messageIndex);
+    console.log('this.messageDocument', this.messageDocument);
+    console.log('newContent', newContent);
+
+    // return this.messageDocument.update(newContent)
+  }
 }

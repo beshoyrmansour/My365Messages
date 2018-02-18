@@ -25,29 +25,46 @@ export class ControlMessageComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.messageForm = this.formBuilder.group({
-      'messageField': new FormControl('asdsadsad', Validators.required),
-      'messages': new FormArray([])
+      'messageField': new FormControl('', Validators.required),
+      'messages': this.formBuilder.array([
+        this.formBuilder.group({
+          'content': ''
+        })
+      ])
     });
   }
 
   ngOnInit() {
-    this.userMessages = this.userService.getUserMessages();
-    console.log(this.userMessages);
-    this.senderData = this.userService.userData;
-    this.senderName = this.senderData.senderName;
-    this.spinner = false;
-    // this.messageForm = this.formBuilder.group({
-    //   'messageField': new FormControl('', Validators.required),
-    //   'messages': new FormArray([])
-    // });
+    this.userService.getUserMessages().subscribe((messages: message[]) => {
+      this.userMessages = messages;
+      console.log(this.userMessages);
+      this.senderData = this.userService.userData;
+      this.senderName = this.senderData.senderName;
+      this.spinner = false;
+      this.msgCounter = this.userMessages.length;
+
+      for (let index = 0; index < messages.length; index++) {
+        const message = messages[index];
+      }
+    });
   }
 
-  onDeleteMessage(messageIndex) {
-
+  onDeleteMessage(messageId) {
+    console.log('messageId', messageId);
+    this.userService.deleteMessage(messageId).then((res) => {
+      console.log('res', res);
+    }).catch((err) => {
+      console.error('err', err);
+    });
   }
 
   onEditMessage(newContent, messageIndex) {
-
+    this.userService.editMessage(newContent, messageIndex);
+    // .then((res) => {
+    //   console.log('res', res);
+    // }).catch((err) => {
+    //   console.error('err', err);
+    // });
   }
 
   addNewMessage() {
@@ -55,19 +72,19 @@ export class ControlMessageComponent implements OnInit {
       content: this.messageForm.controls.messageField.value,
       creationDate: Date.now(),
       viewDate: 0,
-      // sender: this.senderData.id,
+      sender: this.senderData.id
     }
-    console.log(newMessage);
+    console.log('newMessage', newMessage);
     console.log(' this.userMessages before: ', this.userMessages);
     this.userMessages.map((element) => {
       if (element.id) { delete element.id }
     })
-    console.log(' this.userMessages : ', this.userMessages);
+    this.userService.saveMessages(newMessage).then((res) => {
+      console.log('res', res);
 
-    this.userMessages.push(newMessage);
-    // this.userService.saveMessages(this.userMessages).then(() => {
-    // });
+    }).catch((err) => {
+      console.error('err', err);
+    });
   }
 
 }
-0

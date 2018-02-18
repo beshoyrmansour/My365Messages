@@ -13,47 +13,50 @@
               <div class="col-8">
                 <p>Welcome
                   <br>
-                  <span class="text-info">Beshoy Refky</span>
-                  <!-- <span class="text-info">{{senderName}}</span> -->
+                  <!-- <span class="text-info">Beshoy Refky</span> -->
+                  <span class="text-info">{{senderName}}</span>
                 </p>
               </div>
             </div>
 
             <small id="passwordHelpInline" class="text-muted">
-              <!-- You had entered {{messageForm.value['messageField'].length}} of 250 characters. -->
+              You had entered {{messageForm.value['messageField'].length}} of 250 characters.
             </small>
             <div class="input-group">
               <textarea rows="7" maxlength="250" formControlName="messageField" class="form-control" placeholder="New Message"></textarea>
               <span class="input-group-btn">
-                <button class="btn btn-success" type="button" (click)="addNewMessage()">
+                <button class="btn btn-success" type="button" (click)="addNewMessage()" [disabled]="!(messageForm.value['messageField'].length)">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
               </span>
             </div>
             <!-- <button type="button" class="btn btn-block btn-primary my-4" (click)="loadData()">Load Data</button> -->
             <p class="lead">You had entered
-              <span class="text-primary">{{msgCounter}}</span> of 356 messages</p>
+              <span class="text-primary">{{msgCounter}}</span> of 365 messages</p>
             <div class="row">
-              <div class="col-12">
+              <div class="col-12" formArrayName="messages">
                 <!-- formArrayName="messages" -->
                 <div class="row" *ngFor="let message of userMessages; let i = index">
 
                   <div class="col-12">
                     <div class="row mb-1">
                       <div class="col-12">
-                        <!-- [disable]="messageForm.messages.message.viewDate != 0 || 0" -->
-                        <div class="input-group">
+                        <!-- [disabled]="messageForm.messages.message.viewDate != 0 || 0" -->
+                        <!-- <div class="input-group" [formGroupName]="i"> -->
+                        <div class="input-group" >
                           <span class="input-group-addon">{{i+1}}</span>
-                          <textarea maxlength="250" class="form-control" placeholder="Empty Message" [disabled]="message.viewDate != 0">{{message.content}}</textarea>
+                          <!-- formControlName="content" -->
+                          <textarea maxlength="250" class="form-control" placeholder="Empty Message" [disabled]="!(!(message.viewDate))"
+                           >{{message.content}}</textarea>
                           <span class="input-group-btn">
                             <div class="row" style="width:70px">
                               <div class="col-12">
-                                <button class="btn btn-block btn-danger" type="button" (click)="onDeleteTask(i)" [disabled]="message.viewDate != 0">
+                                <button class="btn btn-block btn-danger" type="button" (click)="onDeleteMessage(message.id)" [disabled]="!(!(message.viewDate))">
                                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>
                               </div>
                               <div class="col-12">
-                                <button class="btn btn-block btn-primary" type="button" (click)="onEditMessage(message.content,i)" [disabled]="message.viewDate != 0">
+                                <button class="btn btn-block btn-primary" type="button" (click)="onEditMessage(message,message.id)" [disabled]="!(!(message.viewDate))">
                                   <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </button>
                               </div>
@@ -61,7 +64,7 @@
                           </span>
                         </div>
                         <!-- <p class="form-text text-muted" *ngIf="message.viewDate !=0"> -->
-                        <p class="form-text text-muted" *ngIf="message.viewDate ===0">
+                        <p class="form-text text-muted" *ngIf="!(!(message.viewDate))">
                           {{'Viewed at ' +(message.viewDate | date:'M/d/yy, h:mm a')}}
                         </p>
                       </div>
